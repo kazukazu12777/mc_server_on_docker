@@ -1,0 +1,40 @@
+services:
+
+  # =================================================== #
+  #  Paper Server                                       #
+  # =================================================== #
+  paper:
+    container_name: mc_paper
+    image: itzg/minecraft-server
+    tty: true
+    stdin_open: true
+    environment:
+      ENABLE_ROLLING_LOGS: "TRUE"
+      JVM_OPTS: "-XX:MaxRAMPercentage=75"
+      TYPE: "PAPER"
+      EULA: "TRUE"
+      VERSION: "1.21.5"
+      MOTD: "Paper Server"
+      MAX_PLAYERS: 5
+      ENABLE_COMMAND_BLOCK: "TRUE"
+      SNOOPER_ENABLED: "FALSE"
+      VIEW_DISTANCE: 12
+      PVP: "FALSE"
+      LEVEL: "lv30066" # a default is "world"
+      #ONLINE_MODE: "TRUE"
+      ALLOW_FLIGHT: "TRUE"
+      USE_NATIVE_TRANSPORT: "TRUE"
+      STOP_SERVER_ANNOUNCE_DELAY: 60
+      GUI: "FALSE"
+      PLUGINS: |
+       https://download.geysermc.org/v2/projects/floodgate/versions/latest/builds/latest/downloads/spigot
+      SERVER_PORT: "25566"
+    depends_on:
+      - velocity
+    ports:
+      - "25566:25566/tcp"
+      - "25566:25566/udp"
+    volumes:
+      - ./paper:/data
+      - /etc/timezone:/etc/timezone:ro
+    restart: unless-stopped
